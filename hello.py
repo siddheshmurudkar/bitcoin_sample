@@ -5,11 +5,11 @@ import random
 import string
 app = Flask(__name__,static_url_path='/static')
 
-'''
+
 @app.route("/")
 def hello():
    return app.send_static_file('index.html')   
-'''
+
    
 @app.route('/<path:path>')
 def static_file(path):
@@ -30,7 +30,7 @@ def email_alert(first, second, key):
     report["value1"] = first
     report["value2"] = second
     #report["value3"] = third
-    requests.post("https://maker.ifttt.com/trigger/bitcoin/with/key/iYiYhj3KyPFEwyVRuJzEb", data=report)    
+    requests.post("https://maker.ifttt.com/trigger/bitcoin/with/key/" + str(key), data=report)    
 
 def random_generator(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for x in range(size))
@@ -51,7 +51,13 @@ def device2():
    email_alert(user_emailID, secret_code, IFTTT_KEY)
    #return app.send_static_file('index.html')   
 
-
+@app.route("/device3")
+def device3():
+   user_emailID = os.environ.get('device3')
+   secret_code = random_generator()
+   IFTTT_KEY = os.environ.get('IFTTT_KEY')
+   email_alert(user_emailID, secret_code, IFTTT_KEY)
+   #return app.send_static_file('index.html')   
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
