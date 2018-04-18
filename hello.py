@@ -37,7 +37,7 @@ def random_generator(size=6, chars=string.ascii_uppercase + string.digits):
 
 @app.route("/device1")
 def device1():
-   user_emailID = os.environget('device1')
+   user_emailID = os.environ.get('device1')
    secret_code = random_generator()
    IFTTT_KEY = os.environ.get('IFTTT_KEY')
    email_alert(user_emailID, secret_code, IFTTT_KEY)
