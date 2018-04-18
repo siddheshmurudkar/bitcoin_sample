@@ -30,7 +30,7 @@ def email_alert(first, second, key):
     report["value1"] = first
     report["value2"] = second
     #report["value3"] = third
-    requests.post("https://maker.ifttt.com/trigger/bitcoin/with/key/"+str(key), data=report)    
+    requests.post("https://maker.ifttt.com/trigger/bitcoin/with/key/iYiYhj3KyPFEwyVRuJzEb", data=report)    
 
 def random_generator(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for x in range(size))
