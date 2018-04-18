@@ -29,7 +29,7 @@ def email_alert(first, second, key):
     report = {}
     report["value1"] = first
     report["value2"] = second
-    report["value3"] = third
+    #report["value3"] = third
     requests.post("https://maker.ifttt.com/trigger/bitcoin/with/key/"+key, data=report)    
 
 def random_generator(size=6, chars=string.ascii_uppercase + string.digits):
@@ -45,7 +45,7 @@ def device1():
 
 @app.route("/device2")
 def device2():
-   user_emailID = os.environget('device1')
+   user_emailID = os.environ.get('device2')
    secret_code = random_generator()
    IFTTT_KEY = os.environ.get('IFTTT_KEY')
    email_alert(user_emailID, secret_code, IFTTT_KEY)
