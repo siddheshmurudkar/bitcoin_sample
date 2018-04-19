@@ -4,7 +4,7 @@ import requests
 import random
 import string
 app = Flask(__name__,static_url_path='/static')
-
+errorText="Error"
 
 @app.route("/")
 def hello():
@@ -32,33 +32,33 @@ def email_alert(first, second, key):
     #report["value3"] = third
     requests.post("https://maker.ifttt.com/trigger/bitcoin/with/key/" + str(key), data=report)    
 
+def error_email_alert(first, key):
+    report = {}
+    report["value1"] = first
+    #report["value2"] = second
+    #report["value3"] = third
+    requests.post("https://maker.ifttt.com/trigger/error/with/key/" + str(key), data=report)    
+
 def random_generator(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for x in range(size))
 
 @app.route("/device/<id>")
 def device_id(id):
    g.id = id
-   user_emailID = os.environ.get('g.id')
+   user_emailID = os.environ.get(g.id)
    secret_code = random_generator()
-   IFTTT_KEY = os.environ.get('IFTTT_KEY')
-   email_alert(user_emailID, secret_code, IFTTT_KEY)
-   #return app.send_static_file('index.html')
 
-@app.route("/device2")
-def device2():
-   user_emailID = os.environ.get('device2')
-   secret_code = random_generator()
-   IFTTT_KEY = os.environ.get('IFTTT_KEY')
-   email_alert(user_emailID, secret_code, IFTTT_KEY)
-   #return app.send_static_file('index.html')   
+   if(user_emailID is not None):
+      IFTTT_KEY = os.environ.get('IFTTT_KEY')
+      email_alert(user_emailID, secret_code, IFTTT_KEY)
+      return app.send_static_file('index.html')
+   else:
+      error_email_alert(g.id, IFTTT_KEY)
+      return errorText
+       
+   
 
-@app.route("/device3")
-def device3():
-   user_emailID = os.environ.get('device3')
-   secret_code = random_generator()
-   IFTTT_KEY = os.environ.get('IFTTT_KEY')
-   email_alert(user_emailID, secret_code, IFTTT_KEY)
-   #return app.send_static_file('index.html')   
+ 
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
