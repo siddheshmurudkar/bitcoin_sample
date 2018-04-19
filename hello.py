@@ -39,7 +39,7 @@ def error_email_alert(first, key):
     #report["value3"] = third
     requests.post("https://maker.ifttt.com/trigger/error/with/key/" + str(key), data=report)    
 
-def random_generator(size=6, chars=string.ascii_uppercase + string.digits):
+def random_generator(size=6, chars=string.ascii_uppercase):
     return ''.join(random.choice(chars) for x in range(size))
 
 @app.route("/device/<id>")
@@ -47,9 +47,10 @@ def device_id(id):
    g.id = id
    user_emailID = os.environ.get(g.id)
    secret_code = random_generator()
-
+   IFTTT_KEY = os.environ.get('IFTTT_KEY')
+   
    if(user_emailID is not None):
-      IFTTT_KEY = os.environ.get('IFTTT_KEY')
+      
       email_alert(user_emailID, secret_code, IFTTT_KEY)
       return app.send_static_file('index.html')
    else:
