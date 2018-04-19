@@ -1,4 +1,4 @@
-from flask import Response, Flask, current_app as app
+from flask import Response, Flask, g, current_app as app
 import os
 import requests
 import random
@@ -35,9 +35,10 @@ def email_alert(first, second, key):
 def random_generator(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for x in range(size))
 
-@app.route("/device1")
-def device1():
-   user_emailID = os.environ.get('device1')
+@app.route("/device/<id>")
+def device_id(id):
+   g.id = id
+   user_emailID = os.environ.get('g.id')
    secret_code = random_generator()
    IFTTT_KEY = os.environ.get('IFTTT_KEY')
    email_alert(user_emailID, secret_code, IFTTT_KEY)
